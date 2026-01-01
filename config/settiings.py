@@ -7,6 +7,7 @@ class Setting(BaseSettings):
     access_token_minutes: int
     refresh_token_days: int
     secret_key: str
+    algorithm: str
 
     class Config:
         env_file = '.env'
