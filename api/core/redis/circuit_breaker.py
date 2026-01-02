@@ -1,6 +1,9 @@
 from .connection import redis
 from fastapi import Request, HTTPException, status
-from config import setting
+from config import get_setting
+
+
+setting = get_setting()
 
 
 async def circuit_breaker(request: Request):

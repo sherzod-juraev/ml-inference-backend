@@ -5,7 +5,10 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, ExpiredSignatureError
 from jose.jwt import encode, decode
 from uuid import UUID
-from config import setting
+from config import get_setting
+
+
+setting = get_setting()
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/sign/up')

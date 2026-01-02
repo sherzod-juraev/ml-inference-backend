@@ -1,5 +1,8 @@
 from redis.asyncio import Redis
-from config import setting
+from config import get_setting
+
+
+setting = get_setting()
 
 
 redis = Redis.from_url(
