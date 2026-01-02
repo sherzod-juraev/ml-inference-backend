@@ -8,7 +8,14 @@ class Setting(BaseSettings):
     refresh_token_days: int
     secret_key: str
     algorithm: str
-    aioredis_url: str
+    redis_url: str
+    rate_limit: int
+    rate_period: int
+    global_rate_limit: int
+    global_rate_period: int
+    cb_key: str
+    cb_limit: int
+    cb_period: int
 
     class Config:
         env_file = '.env'
