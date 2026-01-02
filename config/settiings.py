@@ -8,6 +8,7 @@ class Setting(BaseSettings):
     refresh_token_days: int
     secret_key: str
     algorithm: str
+    aioredis_url: str
 
     class Config:
         env_file = '.env'
