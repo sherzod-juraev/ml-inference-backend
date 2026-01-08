@@ -67,7 +67,7 @@ def verify_token(token: str | None, token_type: str, /, *, include_header: bool)
         )
 
 
-def verify_access_token(access_token: Annotated[str, Depends(oauth2_scheme)], /) -> UUID:
+def verify_access_token(access_token: Annotated[str, Depends(oauth2_scheme)]) -> UUID:
     return verify_token(access_token, 'access_token', include_header=True)
 
 

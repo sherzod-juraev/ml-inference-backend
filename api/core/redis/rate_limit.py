@@ -9,7 +9,7 @@ setting = get_setting()
 async def get_ip_and_url(request: Request, text: str, /, *, include_urlpath: bool) -> str:
     forwarded = request.headers.get('X-Forwarded-For')
     client_ip = forwarded.split(',')[0] if forwarded else request.client.host
-    url_path = request.url.path
+    url_path = request.scope['route'].path
     key = f'{text}:{url_path}:{client_ip}' if include_urlpath else f'{text}:{client_ip}'
     return key
 

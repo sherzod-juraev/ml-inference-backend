@@ -15,4 +15,8 @@ class User(Base):
     password: Mapped[str] = mapped_column(Text, nullable=False)
     email: Mapped[str | None] = mapped_column(String(250), nullable=True, unique=True, index=True)
     role: Mapped[str] = mapped_column(String(250), default=UserRole.user.value)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        index=True
+    )

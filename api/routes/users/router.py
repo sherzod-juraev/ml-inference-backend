@@ -6,11 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from api.database import get_db
 from api.core import security
+from api.core.redis import rate_limit
 from config import get_setting
 from . import crud, schemas
 
 
-user_router = APIRouter()
+user_router = APIRouter(dependencies=[Depends(rate_limit)])
 settings = get_setting()
 
 
