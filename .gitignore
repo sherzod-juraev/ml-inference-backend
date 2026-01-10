@@ -49,3 +49,7 @@ htmlcov/
 *.pem
 *.crt
 *.key
+
+# logs
+logs
+logs/*.log
