@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends
 from .routes import routes_router
-from .core import register_exception
-from .core.redis import redis, global_rate_limit
-
+from .core import register_exception, get_logger, log_requests
+from .core.redis import redis as my_redis, global_rate_limit
+from redis.exceptions import ConnectionError
 
 
 app = FastAPI(
@@ -12,14 +12,22 @@ app = FastAPI(
 )
 
 app.include_router(routes_router)
+app.middleware('http')(log_requests)
 register_exception(app)
 
+logger = get_logger('ml_inference')
 
 @app.on_event('startup')
 async def start_up():
-    await redis.ping()
+    try:
+        logger.info('Server started')
+        await my_redis.ping()
+        logger.info('Redis connected')
+    except ConnectionError as ex:
+        logger.error(f'Redis disconnected | Server unavailable | {str(ex)}')
 
 
 @app.on_event('shutdown')
 async def shut_down():
-    await redis.close()
+    await my_redis.close()
+    logger.critical('Redis connection lost | Server shutdown detected')
