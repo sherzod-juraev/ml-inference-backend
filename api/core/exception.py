@@ -30,7 +30,7 @@ def register_exception(app: FastAPI, /):
             exc: RequestValidationError
     ):
         client_ip, route_path = await get_ip_url(request)
-        logger.warning(
+        await logger.warning(
             f"{client_ip} {request.method} {route_path} 400 | RequestValidationError | {exc.errors()}"
         )
         return JSONResponse(
@@ -48,7 +48,7 @@ def register_exception(app: FastAPI, /):
             exc: ResponseValidationError
     ):
         client_ip, route_path = await get_ip_url(request)
-        logger.warning(
+        await logger.warning(
             f"{client_ip} {request.method} {route_path} 503 | ResponseValidationError | {exc.errors()}"
         )
         return JSONResponse(
@@ -65,7 +65,7 @@ def register_exception(app: FastAPI, /):
             exc: TimeoutError
     ):
         client_ip, route_path = await get_ip_url(request)
-        logger.warning(
+        await logger.warning(
             f"{client_ip} {request.method} {route_path} 503 | TimeOutError | {exc}"
         )
         return JSONResponse(
@@ -82,7 +82,7 @@ def register_exception(app: FastAPI, /):
             exc: ValidationError
     ):
         client_ip, route_path = await get_ip_url(request)
-        logger.warning(
+        await logger.warning(
             f"{client_ip} {request.method} {route_path} 400 | ValidationError | {exc.errors()}"
         )
         return JSONResponse(
@@ -100,7 +100,7 @@ def register_exception(app: FastAPI, /):
             exc: Exception
     ):
         client_ip, route_path = await get_ip_url(request)
-        logger.error(
+        await logger.error(
             f"{client_ip} {request.method} {route_path} 500 | UnexpectedError | {exc}"
         )
         return JSONResponse(

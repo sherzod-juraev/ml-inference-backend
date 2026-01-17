@@ -1,22 +1,32 @@
-from logging.handlers import RotatingFileHandler
+from aiologger.handlers.files import AsyncTimedRotatingFileHandler, RolloverInterval
+from aiologger import Logger
+from aiologger.formatters.base import Formatter
 from os import makedirs
-import logging
 
 
-def get_logger(name: str, /) -> logging.Logger:
+all_logger = []
 
-    makedirs('logs', exist_ok=True)
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
 
-    file_handler: RotatingFileHandler = RotatingFileHandler(
-        'logs/app.log',
-        maxBytes=5 * 1024 * 1024,
-        backupCount=100
+def get_logger(name: str, /) -> Logger:
+    dir_name = 'logs'
+    makedirs(dir_name, exist_ok=True)
+    logger = Logger(
+        name=name,
+        level='INFO'
     )
-    file_formatter = logging.Formatter(
-        '%(asctime)s | %(levelname)s | %(name)s | %(message)s'
+
+    file_handler = AsyncTimedRotatingFileHandler(
+        filename=f"{dir_name}/{name}.log",
+        encoding='utf-8',
+        backup_count=100,
+        utc=True,
+        when=RolloverInterval.DAYS
     )
-    file_handler.setFormatter(file_formatter)
-    logger.addHandler(file_handler)
+    file_formatter = Formatter(
+        fmt='%(name)s | %(asctime)s.%(msecs)03d | %(levelname)s | %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    file_handler.formatter = file_formatter
+    logger.add_handler(file_handler)
+    all_logger.append(logger)
     return logger

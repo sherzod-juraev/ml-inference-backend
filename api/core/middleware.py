@@ -20,5 +20,5 @@ async def log_requests(request: Request, call_next):
         route_path = getattr(route_path, 'path', request.url.path)
     else:
         route_path = request.client.host
-    logger.info(f"{client_ip} {request.method} {route_path} {response.status_code} {duration:3f}ms")
+    await logger.info(f"{client_ip} {request.method} {route_path} {response.status_code} {duration:3f}ms")
     return response
